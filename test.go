@@ -17,8 +17,8 @@ func main() {
 
 	// убираем пробелы и табуляцию
 
-	re := regexp.MustCompile(`[\t\n\f\r ]+`)
-	text = re.ReplaceAllString(text, "")
+	spaces := regexp.MustCompile(`[\t\n\f\r ]+`)
+	text = spaces.ReplaceAllString(text, "")
 	fmt.Println(text)
 
 	// проверка на наличие и количество арифметических операторов
@@ -34,7 +34,13 @@ func main() {
 		panic("mixed digits")
 	}
 
-	// поиск индекса и определение оператора
+	// поиск чисел
+
+	re, _ := regexp.Compile(`\d+`)
+	res := re.FindAllString(text, -1)
+	fmt.Println(res) // [cat cat]
+
+
 
 }
 
@@ -49,13 +55,6 @@ func findOperator(str string) int {
 		}
 	}
 	return count
-}
-
-func prepareString(str string) string {
-	strNew := strings.TrimSpace(str)
-	strNew = strings.ToUpper(strNew)
-	fmt.Println(strNew)
-	return strNew
 }
 
 func romeToArab(x string) int {

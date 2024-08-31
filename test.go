@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"regexp"
 	"strings"
 )
 
@@ -14,23 +15,30 @@ func main() {
 
 	text, _ := reader.ReadString('\n')
 
-	text = strings.TrimSpace(text)
+	// убираем пробелы и табуляцию
 
-	f := func(r rune) bool {
-		return r == '+' || r == '-' || r == '*' || r == '/'
+	re := regexp.MustCompile(`[\t\n\f\r ]+`)
+	text = re.ReplaceAllString(text, "")
+	fmt.Println(text)
+
+	// проверка на наличие и количество арифметических операторов
+
+	if findOperator(text) > 1 || findOperator(text) == 0 {
+		panic("more than 1 arithmetic operator or operator not found")
 	}
 
-	if !strings.ContainsFunc(text, f) {
-		panic("arithmetic operator not found")
+	// проверка на смешивание чисел
+
+	findMix, _ := regexp.MatchString(`[XVIxvi].[0-9]|[0-9].[XVIxvi]`, text)
+	if findMix {
+		panic("mixed digits")
 	}
 
-	if findOperator(text) > 1 {
-		panic("more than 1 arithmetic operator")
-	}
+	// поиск индекса и определение оператора
 
 }
 
-func findOperator (str string) int {
+func findOperator(str string) int {
 	operators := func(r rune) bool {
 		return r == '+' || r == '-' || r == '*' || r == '/' || r == '='
 	}
@@ -39,7 +47,7 @@ func findOperator (str string) int {
 		if strings.ContainsFunc(string(str[i]), operators) {
 			count++
 		}
-    }
+	}
 	return count
 }
 
@@ -52,30 +60,30 @@ func prepareString(str string) string {
 
 func romeToArab(x string) int {
 
-	arabToRome := map[string] int {
-		"I":  1,
-		"II":  2,
-		"III":  3,
-		"IV":  4,
-		"V":  5,
-		"VI":  6,
-		"VII":  7,
+	arabToRome := map[string]int{
+		"I":     1,
+		"II":    2,
+		"III":   3,
+		"IV":    4,
+		"V":     5,
+		"VI":    6,
+		"VII":   7,
 		"VIII":  8,
-		"IX":  9,
-		"X":  10,
-		"XI":  11,
-		"XII":  12,
+		"IX":    9,
+		"X":     10,
+		"XI":    11,
+		"XII":   12,
 		"XIII":  13,
-		"XIV":  14,
-		"XV":  15,
-		"XVI":  16,
+		"XIV":   14,
+		"XV":    15,
+		"XVI":   16,
 		"XVII":  17,
-		"XVIII":  18,
-		"XIX":  19,
-		"XX": 20,
+		"XVIII": 18,
+		"XIX":   19,
+		"XX":    20,
 	}
 	return arabToRome[x]
-} 
+}
 
 func arabToRome(x int) string {
 

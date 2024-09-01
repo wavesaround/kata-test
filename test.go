@@ -10,12 +10,12 @@ import (
 )
 
 func main() {
-	var a int
-	var b int
+
+	// просим пользователя ввести математическое выражение, принимаем строку
 
 	reader := bufio.NewReader(os.Stdin)
 
-	fmt.Println("Пожалуйста, введите одно арифметическое выражение с двумя числами. \nДля получения результата нажмите Enter")
+	fmt.Println("Пожалуйста, введите одно арифметическое выражение с двумя числами до 10. \nДля получения результата нажмите Enter")
 
 	text, _ := reader.ReadString('\n')
 
@@ -34,7 +34,7 @@ func main() {
 
 	// проверка на наличие и количество арифметических операторов
 
-	if findOperator(text) > 1 || findOperator(text) == 0 {
+	if findOperator(text) != 1 {
 		panic("more than 1 arithmetic operator or operator not found")
 	}
 
@@ -55,9 +55,12 @@ func main() {
 
 	romeState, _ := regexp.MatchString(`[XVILCM]`, twoNumbers[0])
 
+	var a int
+	var b int
+
 	if romeState {
-		romeMoreTen1, _ := regexp.MatchString(`X{1}[XIV]{1,5}|[LCM]`, twoNumbers[0])
-		romeMoreTen2, _ := regexp.MatchString(`X{1}[XIV]{1,5}|[LCM]`, twoNumbers[2])
+		romeMoreTen1, _ := regexp.MatchString(`X{1}[XIV]{1,}|[LCM]`, twoNumbers[0])
+		romeMoreTen2, _ := regexp.MatchString(`X{1}[XIV]{1,}|[LCM]`, twoNumbers[2])
 		if romeMoreTen1 || romeMoreTen2 {
 			panic("numbers are more the 10")
 		}
@@ -99,9 +102,9 @@ func main() {
 	// если ввод был арабским, выводим результат, в противном случае переводим в римские
 
 	if !romeState {
-		fmt.Println(res)
+		fmt.Println("Результат:", res)
 	} else {
-		fmt.Println(arabToRome(res))
+		fmt.Println("Результат:", arabToRome(res))
 	}
 }
 
@@ -137,39 +140,38 @@ func romeToArab(x string) int {
 
 func arabToRome(x int) string {
 
-	arabToRomeUnit := map[int]string {
-		0:  "",
-		1:  "I",
-		2:  "II",
-		3:  "III",
-		4:  "IV",
-		5:  "V",
-		6:  "VI",
-		7:  "VII",
-		8:  "VIII",
-		9:  "IX",
+	arabToRomeUnit := map[int]string{
+		0: "",
+		1: "I",
+		2: "II",
+		3: "III",
+		4: "IV",
+		5: "V",
+		6: "VI",
+		7: "VII",
+		8: "VIII",
+		9: "IX",
 	}
 
-	arabToRomeTens := map[int]string {
-		1: "X",
-		2: "XX",
-		3: "XXX",
-		4: "XL",
-		5: "L",
-		6: "LX",
-		7: "LXX",
-		8: "LXXX",
-		9: "XC",
+	arabToRomeTens := map[int]string{
+		1:  "X",
+		2:  "XX",
+		3:  "XXX",
+		4:  "XL",
+		5:  "L",
+		6:  "LX",
+		7:  "LXX",
+		8:  "LXXX",
+		9:  "XC",
 		10: "C",
 	}
 
-		if x < 11 { 
-			return arabToRomeUnit[x] 
-		} else {
-			tens := x/10
-			units :=x%10
-			fmt.Println(tens, units)
-			return arabToRomeTens[tens] + arabToRomeUnit[units]
-		}
+	if x < 11 {
+		return arabToRomeUnit[x]
+	} else {
+		tens := x / 10
+		units := x % 10
+		return arabToRomeTens[tens] + arabToRomeUnit[units]
+	}
 
 }

@@ -51,7 +51,7 @@ func main() {
 	twoNumbers := numbers.FindAllString(text, -1)
 
 	// конвертируем римские в арабские, получаем целые числа
-	// сразу проверяем, не встречаются ли среди них больше 10
+	// сразу проверяем, не встречаются ли среди них больше 10 и меньше 1
 
 	romeState, _ := regexp.MatchString(`[XVILCM]`, twoNumbers[0])
 
@@ -62,15 +62,15 @@ func main() {
 		romeMoreTen1, _ := regexp.MatchString(`X{1}[XIV]{1,}|[LCM]`, twoNumbers[0])
 		romeMoreTen2, _ := regexp.MatchString(`X{1}[XIV]{1,}|[LCM]`, twoNumbers[2])
 		if romeMoreTen1 || romeMoreTen2 {
-			panic("numbers are more the 10")
+			panic("type numbers from I to X only")
 		}
 		a = romeToArab(twoNumbers[0])
 		b = romeToArab(twoNumbers[2])
 	} else {
 		a, _ = strconv.Atoi(twoNumbers[0])
 		b, _ = strconv.Atoi(twoNumbers[2])
-		if a > 10 || b > 10 {
-			panic("numbers are more the 10")
+		if a < 1 || a > 10 || b < 1 || b > 10 {
+			panic("type numbers from 1 to 10 only")
 		}
 	}
 
